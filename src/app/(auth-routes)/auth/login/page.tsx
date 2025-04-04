@@ -23,13 +23,13 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import { signIn } from "next-auth/react"
-import { routeModule } from "next/dist/build/templates/pages"
 import { useRouter } from "next/navigation"
 import { useAppContext } from "@/contexts/AppContext"
+import { Loader } from "lucide-react"
 
 const formSchema = z.object({
   email: z.string().email(),
-  password: z.string().min(2, {
+  password: z.string().min(6, {
     message: "A senha deve conter no mínimo 6 caracteres.",
   }),
 })
@@ -100,7 +100,7 @@ export default function Login() {
                   <FormMessage />
                 </FormItem>
               )} />
-            <Button type="submit" className="w-full cursor-pointer">{loading?'L...':'Login'}</Button>
+            <Button type="submit" className="w-full cursor-pointer">{loading?<Loader className="animate-spin" />:'Entrar'}</Button>
           </form>
         </Form>
       </CardContent>

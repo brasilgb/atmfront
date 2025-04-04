@@ -1,16 +1,13 @@
-import { nextAuthOptions } from '@/app/api/auth/[...nextauth]/route'
-import ButtonLogout from '@/components/public/ButtonLogout';
-import { getServerSession } from 'next-auth'
+import KpisApp from '@/components/Charts/KpisApp'
 import React from 'react'
 
 export default async function Admin() {
-const session = await getServerSession(nextAuthOptions);
   return (
-    <div>
-      <p>Olá {session?.user.name}, bem vindo!</p>
-      <div>
-        <ButtonLogout/>
-      </div>
+    <div className="md:grid grid-cols-4 gap-4">
+      <KpisApp />
+      <KpisApp />
+      <KpisApp />
+      <KpisApp />
     </div>
   )
 }

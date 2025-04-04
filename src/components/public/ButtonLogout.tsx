@@ -3,24 +3,31 @@ import React from 'react'
 import { Button } from '../ui/button'
 import { signOut } from 'next-auth/react'
 import { useRouter } from 'next/navigation';
+import { LogOut } from 'lucide-react';
 
-export default function ButtonLogout() {
+interface ButtonLogoutProps {
+  variant?: any;
+  icon?: boolean;
+}
+export default function ButtonLogout({ variant, icon }: ButtonLogoutProps) {
 
-    const router = useRouter();
-    async function logout() {
-        await signOut({
-            redirect: false
-        })
+  const router = useRouter();
+  async function logout() {
+    await signOut({
+      redirect: false
+    })
 
-        router.replace('/auth/login')
+    router.replace('/auth/login')
 
-    }
+  }
 
   return (
     <Button
-    onClick={() => logout()}
+      variant={variant}
+      className={`${icon ? 'w-full justify-start' : ''} cursor-pointer`}
+      onClick={() => logout()}
     >
-        Logout
+      {icon && <LogOut className='h-4 w-4' />}Logout
     </Button>
   )
 }
