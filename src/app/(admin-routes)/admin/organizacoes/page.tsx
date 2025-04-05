@@ -10,10 +10,23 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
 import { Building2 } from 'lucide-react'
-import { Button } from '@/components/ui/button'
 import { CreateOrganization } from './create'
+import { getServerSession } from 'next-auth'
+import { nextAuthOptions } from '@/app/api/auth/[...nextauth]/route'
+import { columns } from "./columns"
+import { DataTable } from "./data-table"
+export default async function Organizacoes() {
+  const session = await getServerSession(nextAuthOptions);
 
-export default function Organizacoes() {
+  let data = await fetch('http://localhost:3000/organization/all', {
+    method: 'GET',
+    headers: {
+      'Content-type': 'Application/json',
+      Authorization: `Bearer ${session?.user?.token}`
+    }
+  });
+  let organizations = await data.json()
+
   return (
     <section>
       <div className='flex items-start justify-between h-14'>
@@ -57,7 +70,7 @@ export default function Organizacoes() {
               {/* <Button variant="add" >Criar organização </Button> */}
             </div>
           </CardHeader>
-          <Table>
+          {/* <Table>
             <TableHeader>
               <TableRow>
                 <TableHead>Organização</TableHead>
@@ -68,15 +81,18 @@ export default function Organizacoes() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              <TableRow>
-                <TableCell>ok</TableCell>
-                <TableCell>ok</TableCell>
-                <TableCell>ok</TableCell>
-                <TableCell>ok</TableCell>
-                <TableCell>ok</TableCell>
-              </TableRow>
+              {organizations?.map((organization: OrganizationProps) => (
+                <TableRow key={organization.id}>
+                  <TableCell>{organization.name}</TableCell>
+                  <TableCell>{organization.cnpj}</TableCell>
+                  <TableCell>{organization.status}</TableCell>
+                  <TableCell>{organization.createdAt}</TableCell>
+                  <TableCell>ok</TableCell>
+                </TableRow>
+              ))}
             </TableBody>
-          </Table>
+          </Table> */}
+          <DataTable columns={columns} data={organizations} />
         </CardContent>
       </Card>
     </section>

@@ -8,22 +8,12 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { User } from 'lucide-react'
-import { signOut } from 'next-auth/react';
-import { redirect } from 'next/navigation'
 import { getServerSession } from 'next-auth';
 import { nextAuthOptions } from '@/app/api/auth/[...nextauth]/route';
 import ButtonLogout from '../public/ButtonLogout';
 
 export default async function DropDownMenu() {
 const session = await getServerSession(nextAuthOptions);
-    async function logout() {
-        await signOut({
-            redirect: false
-        })
-
-        redirect('/auth/login')
-    }
-
     return (
         <DropdownMenu>
             <DropdownMenuTrigger>

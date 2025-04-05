@@ -18,6 +18,8 @@ import { Input } from "@/components/ui/input"
 import { useRouter } from "next/navigation"
 import { useAppContext } from "@/contexts/AppContext";
 import { Loader } from "lucide-react"
+import { useSession } from "next-auth/react";
+import { useState } from "react"
 
 const formSchema = z.object({
     name: z.string().min(1, { message: 'O nome deve ser preenchido!' }),
@@ -27,7 +29,10 @@ const formSchema = z.object({
 
 export function CreateOrganization() {
     const { loading, setLoading } = useAppContext();
+    const {data: session} = useSession();
 
+    const [open, setOpen] = useState(false);
+    
     const router = useRouter();
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -42,7 +47,8 @@ export function CreateOrganization() {
         const response = await fetch('http://localhost:3000/organization', {
             method: 'POST',
             headers: {
-                'Content-type': 'Application/json'
+                'Content-type': 'Application/json',
+                Authorization: `Bearer ${session?.user?.token}`
             },
             body: JSON.stringify({
                 name: values?.name,
@@ -53,17 +59,13 @@ export function CreateOrganization() {
         const user = await response.json();
 
         if(user && response.ok) {
-            setLoading(false)
-            alert(user);
-            router.replace('/admin/organizacao')
-        }else{
-            alert(user);
-            setLoading(false)
+            setLoading(false);
+            setOpen(false);
+            router.replace('/admin/organizacoes')
         }
     }
-
     return (
-        <Dialog>
+        <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
                 <Button variant="add">Criar organização</Button>
             </DialogTrigger>

@@ -7,6 +7,7 @@ declare module 'next-auth' {
             email: string;
             is_admin: string;
             roles: string;
+            token: string;
             createdAt: string;
         }
     }
