@@ -6,6 +6,10 @@ import { ColumnDef } from "@tanstack/react-table"
 import { ArrowUpDown } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox"
 import moment from "moment";
+import Link from "next/link";
+import { EditOrganization } from "./edit";
+import { DeleteAlertDialog } from "@/components/admin/DeleteAlertDialog";
+import { Badge } from "@/components/ui/badge";
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
@@ -58,6 +62,13 @@ export const columns: ColumnDef<OrganizationProps>[] = [
         </Button>
       )
     },
+    cell: ({row}) => {
+      const orgs = row.original as any;
+      return (
+        <div className="">
+          {orgs === "0" ? <Badge variant="destructive">Inativo</Badge> : <Badge variant="secondary">Ativo</Badge>}</div>
+      )
+    },
   },
   {
     accessorKey: "createdAt",
@@ -69,4 +80,16 @@ export const columns: ColumnDef<OrganizationProps>[] = [
       return <div className="text-left font-medium">{formatted}</div>
     },
   },
+  {
+    accessorKey: " ",
+    cell: ({ row }) => {
+      const orgs = row.original;
+      return (
+        <div className="flex items-center justify-end gap-2">
+          <EditOrganization org={orgs} />
+          <DeleteAlertDialog deleteId={orgs.id} />
+        </div>
+      )
+    }
+  }
 ]

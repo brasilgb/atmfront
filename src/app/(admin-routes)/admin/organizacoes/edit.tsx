@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button"
 import {
     Dialog,
     DialogContent,
-    DialogDescription,
     DialogFooter,
     DialogHeader,
     DialogTitle,
@@ -27,7 +26,7 @@ const formSchema = z.object({
     status: z.string(),
 })
 
-export function CreateOrganization() {
+export function EditOrganization({org}: any) {
     const { loading, setLoading } = useAppContext();
     const { data: session } = useSession();
 
@@ -37,15 +36,15 @@ export function CreateOrganization() {
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            name: "",
-            cnpj: "",
-            status: "",
+            name: org.name,
+            cnpj: org.cnpj,
+            status: org.status,
         },
     })
     async function onSubmit(values: z.infer<typeof formSchema>) {
         setLoading(true)
-        const response = await fetch('http://localhost:3000/organization', {
-            method: 'POST',
+        const response = await fetch(`http://localhost:3000/organization/edit?organization_id=${org.id}`, {
+            method: 'PUT',
             headers: {
                 'Content-type': 'Application/json',
                 Authorization: `Bearer ${session?.user?.token}`
@@ -60,7 +59,6 @@ export function CreateOrganization() {
 
         if (user && response.ok) {
             setLoading(false);
-            form.reset()
             setOpen(false);
             router.replace('/admin/organizacoes')
         }
@@ -68,7 +66,7 @@ export function CreateOrganization() {
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-                <Button variant="add">Criar organização</Button>
+                <Button variant="add">Editar</Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-xl">
                 <DialogHeader>
