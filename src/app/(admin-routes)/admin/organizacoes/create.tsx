@@ -60,6 +60,7 @@ export function CreateOrganization() {
 
         if(user && response.ok) {
             setLoading(false);
+            form.reset()
             setOpen(false);
             router.replace('/admin/organizacoes')
         }
