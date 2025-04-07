@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/alert-dialog"
 import { Button } from "@/components/ui/button"
 import { useAppContext } from "@/contexts/AppContext";
-import { Loader } from "lucide-react";
+import { Loader, Trash2 } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -43,7 +43,7 @@ export function DeleteAlertDialog({ deleteId }: any) {
     return (
         <AlertDialog open={open} onOpenChange={setOpen}>
             <AlertDialogTrigger asChild>
-                <Button variant="destructive">Excluir</Button>
+                <Button className="cursor-pointer" variant="destructive" size="icon"><Trash2 /></Button>
             </AlertDialogTrigger>
             <AlertDialogContent>
                 <AlertDialogHeader>

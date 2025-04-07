@@ -66,7 +66,7 @@ export const columns: ColumnDef<OrganizationProps>[] = [
       const orgs = row.original as any;
       return (
         <div className="">
-          {orgs === "0" ? <Badge variant="destructive">Inativo</Badge> : <Badge variant="secondary">Ativo</Badge>}</div>
+          {orgs === "0" ? <Badge variant="destructive">Inativo</Badge> : <Badge variant="active">Ativo</Badge>}</div>
       )
     },
   },

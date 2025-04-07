@@ -17,14 +17,15 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input"
 import { useRouter } from "next/navigation"
 import { useAppContext } from "@/contexts/AppContext";
-import { Loader } from "lucide-react"
+import { Loader, Plus } from "lucide-react"
 import { useSession } from "next-auth/react";
 import { useState } from "react"
+import { Switch } from "@/components/ui/switch"
 
 const formSchema = z.object({
     name: z.string().min(1, { message: 'O nome deve ser preenchido!' }),
     cnpj: z.string().min(1, { message: 'O CNPJ deve ser preenchido!' }),
-    status: z.string(),
+    status: z.boolean(),
 })
 
 export function CreateOrganization() {
@@ -39,7 +40,7 @@ export function CreateOrganization() {
         defaultValues: {
             name: "",
             cnpj: "",
-            status: "",
+            status: false,
         },
     })
     async function onSubmit(values: z.infer<typeof formSchema>) {
@@ -53,7 +54,7 @@ export function CreateOrganization() {
             body: JSON.stringify({
                 name: values?.name,
                 cnpj: values?.cnpj,
-                status: values.status
+                status: values?.status
             })
         });
         const user = await response.json();
@@ -68,7 +69,7 @@ export function CreateOrganization() {
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-                <Button variant="add">Criar organização</Button>
+                <Button variant="add"><Plus />Criar organização</Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-xl">
                 <DialogHeader>
@@ -105,6 +106,26 @@ export function CreateOrganization() {
                                             <FormLabel>CNPJ</FormLabel>
                                             <FormControl>
                                                 <Input placeholder="CNPJ" {...field} />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )} />
+                            </div>
+                            <div>
+                                <FormField
+                                    control={form.control}
+                                    name="status"
+                                    render={({ field }) => (
+                                        <FormItem
+                                            className="w-full"
+                                        >
+                                            <FormLabel>Status</FormLabel>
+                                            <FormControl>
+                                                <Switch
+                                                    checked={field.value}
+                                                    onCheckedChange={field.onChange}
+                                                />
+                                                {/* <Input placeholder="CNPJ" {...field} /> */}
                                             </FormControl>
                                             <FormMessage />
                                         </FormItem>
