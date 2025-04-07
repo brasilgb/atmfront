@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { OrganizationProps } from "@/types/organization";
 import { ColumnDef } from "@tanstack/react-table"
 import { ArrowUpDown } from "lucide-react";
+import { Checkbox } from "@/components/ui/checkbox"
 import moment from "moment";
 
 // This type is used to define the shape of our data.
