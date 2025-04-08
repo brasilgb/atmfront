@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { OrganizationProps } from "@/types/organization";
 import { ColumnDef } from "@tanstack/react-table"
-import { ArrowUpDown } from "lucide-react";
+import { ArrowUpDown, DatabaseBackup } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox"
 import moment from "moment";
 import Link from "next/link";
@@ -62,11 +62,11 @@ export const columns: ColumnDef<OrganizationProps>[] = [
         </Button>
       )
     },
-    cell: ({row}) => {
-      const orgs = row.original as any;
+    cell: ({ row }) => {
+      const orgs = row.original.status;
       return (
         <div className="">
-          {orgs === "0" ? <Badge variant="destructive">Inativo</Badge> : <Badge variant="active">Ativo</Badge>}</div>
+          {orgs ? <Badge variant="active">Ativo</Badge> : <Badge variant="destructive">Inativo</Badge>}</div>
       )
     },
   },
@@ -86,6 +86,7 @@ export const columns: ColumnDef<OrganizationProps>[] = [
       const orgs = row.original;
       return (
         <div className="flex items-center justify-end gap-2">
+          <Button variant="outline" size="icon"><DatabaseBackup /></Button>
           <EditOrganization org={orgs} />
           <DeleteAlertDialog deleteId={orgs.id} />
         </div>

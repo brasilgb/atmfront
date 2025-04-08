@@ -17,7 +17,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input"
 import { useRouter } from "next/navigation"
 import { useAppContext } from "@/contexts/AppContext";
-import { Loader, Plus } from "lucide-react"
+import { Loader, Plus, Save } from "lucide-react"
 import { useSession } from "next-auth/react";
 import { useState } from "react"
 import { Switch } from "@/components/ui/switch"
@@ -125,14 +125,15 @@ export function CreateOrganization() {
                                                     checked={field.value}
                                                     onCheckedChange={field.onChange}
                                                 />
-                                                {/* <Input placeholder="CNPJ" {...field} /> */}
                                             </FormControl>
                                             <FormMessage />
                                         </FormItem>
                                     )} />
                             </div>
-                            <DialogFooter>
-                                <Button type="submit" className="cursor-pointer">{loading ? <Loader className="animate-spin" /> : 'Salvar'}</Button>
+                            <DialogFooter className="border-t pt-4">
+                                <Button type="submit" className="cursor-pointer">
+                                    <Save />{loading ? <Loader className="animate-spin" /> : 'Salvar'}
+                                </Button>
                             </DialogFooter>
                         </form>
                     </Form>

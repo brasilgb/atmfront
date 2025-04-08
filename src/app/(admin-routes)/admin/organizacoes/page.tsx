@@ -31,7 +31,7 @@ export default async function Organizacoes() {
       <div className='flex items-start justify-between h-14'>
         <div className='flex items-center justify-start gap-2 text-gray-600'>
           <Building2 />
-          <h1 className='text-2xl font-semibold'>Organização</h1>
+          <h1 className='text-2xl font-semibold'>Organizações</h1>
         </div>
         <div>
           <Breadcrumb>
@@ -41,11 +41,7 @@ export default async function Organizacoes() {
               </BreadcrumbItem>
               <BreadcrumbSeparator />
               <BreadcrumbItem>
-                <BreadcrumbLink href="/components">Components</BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator />
-              <BreadcrumbItem>
-                <BreadcrumbPage>Breadcrumb</BreadcrumbPage>
+                <BreadcrumbPage>Organizações</BreadcrumbPage>
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>
