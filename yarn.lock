@@ -3326,6 +3326,11 @@ uuid@^8.3.2:
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-8.3.2.tgz#80d5b5ced271bb9af6c445f21a1a04c606cefbe2"
   integrity sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==
 
+validation-br@^1.5.2:
+  version "1.5.2"
+  resolved "https://registry.yarnpkg.com/validation-br/-/validation-br-1.5.2.tgz#b9af812765e08437e5e30c44151d84dc8404e0eb"
+  integrity sha512-CW00077XpqAOd/24VG2Vv+C4nx+yABw4BFsqvbLXD5wTO+Mp0g/6fK7tpdf2+PnhfUGItsX+TKIpJpnBz5V4lA==
+
 which-boxed-primitive@^1.1.0, which-boxed-primitive@^1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/which-boxed-primitive/-/which-boxed-primitive-1.1.1.tgz#d76ec27df7fa165f18d5808374a5fe23c29b176e"

@@ -21,10 +21,12 @@ import { Loader, Plus, Save } from "lucide-react"
 import { useSession } from "next-auth/react";
 import { useState } from "react"
 import { Switch } from "@/components/ui/switch"
+import { isCNPJ } from 'validation-br'
+import * as cnpj from 'validation-br/dist/cnpj';
 
 const formSchema = z.object({
     name: z.string().min(1, { message: 'O nome deve ser preenchido!' }),
-    cnpj: z.string().min(1, { message: 'O CNPJ deve ser preenchido!' }),
+    cnpj: z.string().refine((data) => isCNPJ(data),{message: 'O CNPJ deve ser válido'}),
     status: z.boolean(),
 })
 
@@ -69,9 +71,9 @@ export function CreateOrganization() {
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-                <Button variant="add"><Plus />Criar organização</Button>
+                <Button className="cursor-pointer" variant="add"><Plus />Criar organização</Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-xl">
+            <DialogContent className="sm:max-w-2xl">
                 <DialogHeader>
                     <DialogTitle>Criar organização</DialogTitle>
                     {/* <DialogDescription>
@@ -105,7 +107,7 @@ export function CreateOrganization() {
                                         >
                                             <FormLabel>CNPJ</FormLabel>
                                             <FormControl>
-                                                <Input placeholder="CNPJ" {...field} />
+                                                <Input placeholder="CNPJ" {...field} value={cnpj.mask((field.value))} />
                                             </FormControl>
                                             <FormMessage />
                                         </FormItem>
@@ -119,7 +121,7 @@ export function CreateOrganization() {
                                         <FormItem
                                             className="w-full"
                                         >
-                                            <FormLabel>Status</FormLabel>
+                                            <FormLabel>Selecione o Status</FormLabel>
                                             <FormControl>
                                                 <Switch
                                                     checked={field.value}
@@ -131,7 +133,8 @@ export function CreateOrganization() {
                                     )} />
                             </div>
                             <DialogFooter className="border-t pt-4">
-                                <Button type="submit" className="cursor-pointer">
+
+                                <Button type="submit" className="cursor-pointer" variant="add">
                                     <Save />{loading ? <Loader className="animate-spin" /> : 'Salvar'}
                                 </Button>
                             </DialogFooter>
