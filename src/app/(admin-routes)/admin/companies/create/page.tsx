@@ -17,6 +17,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import * as cnpj from 'validation-br/dist/cnpj';
 import * as postalCode from 'validation-br/dist/postalCode';
 import { zipCodeMask } from '@/lib/utils'
+import { Textarea } from '@/components/ui/textarea'
+import { Switch } from '@/components/ui/switch'
 
 export default function CreateCompany() {
   const [organizations, setOrganizations] = useState<any>([])
@@ -30,7 +32,6 @@ export default function CreateCompany() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      corpreason: "",
       organizationId: "",
       cnpj: "",
       subnumber: "",
@@ -64,7 +65,7 @@ export default function CreateCompany() {
   }, [session]);
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-console.log(values);
+    console.log(values);
 
     setLoading(true)
     const response = await fetch('http://localhost:3000/company', {
@@ -74,9 +75,21 @@ console.log(values);
         Authorization: `Bearer ${session?.user?.token}`
       },
       body: JSON.stringify({
-        altername: values?.altername,
-        cnpj: values?.cnpj,
-        status: values?.status
+        organizationId: values.organizationId,
+        cnpj: values.cnpj,
+        subnumber: values.subnumber,
+        subname: values.subname,
+        cep: values.cep,
+        state: values.state,
+        city: values.cep,
+        district: values.district,
+        street: values.street,
+        number: values.number,
+        complement: values.complement,
+        telefone: values.telefone,
+        status: values.status,
+        whatsapp: values.whatsapp,
+        observation: values.observation,
       })
     });
     const user = await response.json();
@@ -89,7 +102,7 @@ console.log(values);
   }
 
 
-  const handleVCep = ((cep:any) => {
+  const handleVCep = ((cep: any) => {
     fetch(`https://viacep.com.br/ws/${cep}/json/`, {
       method: 'GET',
       headers: {
@@ -223,7 +236,7 @@ console.log(values);
                     >
                       <FormLabel>CEP</FormLabel>
                       <FormControl>
-                        <Input placeholder="" {...field} maxLength={9} value={zipCodeMask(field.value)} onBlurCapture={() => handleVCep(field.value)}/>
+                        <Input placeholder="" {...field} maxLength={9} value={zipCodeMask(field.value)} onBlurCapture={() => handleVCep(field.value)} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -329,6 +342,38 @@ console.log(values);
                     </FormItem>
                   )} />
               </div>
+              <FormField
+                control={form.control}
+                name="observation"
+                render={({ field }) => (
+                  <FormItem
+                    className="w-full"
+                  >
+                    <FormLabel>Observações</FormLabel>
+                    <FormControl>
+                      <Textarea placeholder="" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )} />
+              <FormField
+                control={form.control}
+                name="status"
+                render={({ field }) => (
+                  <FormItem
+                    className="w-full"
+                  >
+                    <FormLabel>Selecione o Status</FormLabel>
+                    <FormControl>
+                      <Switch
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )} />
+
               <CardFooter className='flex justify-end px-0'>
                 <Button type="submit" className="cursor-pointer" variant="add">
                   <Save />{loading ? <Loader className="animate-spin" /> : 'Salvar'}

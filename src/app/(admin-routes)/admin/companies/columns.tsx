@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { ColumnDef } from "@tanstack/react-table"
-import { ArrowUpDown, DatabaseBackup, Edit } from "lucide-react";
+import { ArrowUpDown, Edit } from "lucide-react";
 import moment from "moment";
 import { DeleteAlertDialog } from "@/components/admin/DeleteAlertDialog";
 import { Badge } from "@/components/ui/badge";
