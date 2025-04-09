@@ -1,9 +1,24 @@
+import { nextAuthOptions } from '@/app/api/auth/[...nextauth]/route'
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from '@/components/ui/breadcrumb'
 import { Card } from '@/components/ui/card'
 import { Building } from 'lucide-react'
+import { getServerSession } from 'next-auth'
 import React from 'react'
+import { columns } from './columns'
+import { DataTable } from './data-table'
 
-export default function Filiais() {
+export default async function Filiais() {
+  const session = await getServerSession(nextAuthOptions);
+
+  let data = await fetch('http://localhost:3000/company/all', {
+    method: 'GET',
+    headers: {
+      'Content-type': 'Application/json',
+      Authorization: `Bearer ${session?.user?.token}`
+    }
+  });
+  let companies = await data.json()
+
   return (
     <section>
       <div className='flex items-start justify-between h-14'>
@@ -26,7 +41,7 @@ export default function Filiais() {
         </div>
       </div>
       <Card className='p-4'>
-        {/* <DataTable columns={columns} data={organizations} /> */}
+        <DataTable columns={columns} data={companies} />
       </Card>
 
     </section>

@@ -20,10 +20,12 @@ import { FilePenLine, Loader, Save } from "lucide-react"
 import { useSession } from "next-auth/react";
 import { useState } from "react"
 import { Switch } from "@/components/ui/switch"
+import * as cnpj from "validation-br/dist/cnpj"
+import { isCNPJ } from "validation-br"
 
 const formSchema = z.object({
     name: z.string().min(1, { message: 'O nome deve ser preenchido!' }),
-    cnpj: z.string().min(1, { message: 'O CNPJ deve ser preenchido!' }),
+    cnpj: z.string().min(1, { message: 'O CNPJ deve ser preenchido!' }).refine((data) => isCNPJ(data),{message: "O CNPJ deve ser válido!"}),
     status: z.boolean(),
 })
 
@@ -69,9 +71,9 @@ export function EditOrganization({org}: any) {
             <DialogTrigger asChild>
                 <Button className="cursor-pointer" variant="edit"><FilePenLine /></Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-xl">
-                <DialogHeader>
-                    <DialogTitle>Criar organização</DialogTitle>
+            <DialogContent className="sm:max-w-2xl">
+                <DialogHeader className="border-b pb-4">
+                    <DialogTitle>Editar organização</DialogTitle>
                     {/* <DialogDescription>
                         Make changes to your profile here. Click save when you're done.
                     </DialogDescription> */}
@@ -103,7 +105,7 @@ export function EditOrganization({org}: any) {
                                         >
                                             <FormLabel>CNPJ</FormLabel>
                                             <FormControl>
-                                                <Input placeholder="CNPJ" {...field} />
+                                                <Input placeholder="CNPJ" {...field} value={cnpj.mask((field.value))} />
                                             </FormControl>
                                             <FormMessage />
                                         </FormItem>

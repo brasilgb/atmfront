@@ -1,39 +1,47 @@
 "use client"
 
 import { Button } from "@/components/ui/button";
-import { OrganizationProps } from "@/types/organization";
 import { ColumnDef } from "@tanstack/react-table"
-import { ArrowUpDown, DatabaseBackup } from "lucide-react";
-import { Checkbox } from "@/components/ui/checkbox"
+import { ArrowUpDown, DatabaseBackup, Edit } from "lucide-react";
 import moment from "moment";
-import Link from "next/link";
-import { EditOrganization } from "./edit";
 import { DeleteAlertDialog } from "@/components/admin/DeleteAlertDialog";
 import { Badge } from "@/components/ui/badge";
+import * as cnpj from "validation-br/dist/cnpj";
+import Link from "next/link";
+import { CompanyProps } from "@/types/company";
 
-// This type is used to define the shape of our data.
-// You can use a Zod schema here if you want.
-// export type Payment = {
-//   id: string
-//   amount: number
-//   status: "pending" | "processing" | "success" | "failed"
-//   email: string
-// }
-
-export const columns: ColumnDef<OrganizationProps>[] = [
+export const columns: ColumnDef<CompanyProps>[] = [
   {
-    accessorKey: "name",
+    accessorKey: "Organization.name",
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Nome
+          Organização
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       )
     },
+  },
+  {
+    accessorKey: "subname",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Filial
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      )
+    },
+  },
+  {
+    accessorKey: "subnumber",
+    header: () => <div className="text-left">N° Filial</div>,
   },
   {
     accessorKey: "cnpj",
@@ -48,6 +56,16 @@ export const columns: ColumnDef<OrganizationProps>[] = [
         </Button>
       )
     },
+    cell: ({ row }) => {
+      const fcnpj = row.original.cnpj
+      return (
+        <span>{cnpj.mask(fcnpj)}</span>
+      )
+    }
+  },
+  {
+    accessorKey: "telefone",
+    header: () => <div className="text-left">Telefone</div>,
   },
   {
     accessorKey: "status",
@@ -83,12 +101,13 @@ export const columns: ColumnDef<OrganizationProps>[] = [
   {
     accessorKey: " ",
     cell: ({ row }) => {
-      const orgs = row.original;
+      const comp = row.original;
       return (
         <div className="flex items-center justify-end gap-2">
-          <Button variant="outline" size="icon"><DatabaseBackup /></Button>
-          <EditOrganization org={orgs} />
-          <DeleteAlertDialog deleteId={orgs.id} />
+          <Link 
+          className="flex items-center justify-center gap-2 p-2.5 whitespace-nowrap rounded-md text-sm font-medium transition-all bg-orange-500 text-primary-foreground shadow-xs hover:bg-orange-500/90"
+          href={{ pathname: "/admin/filiais/edit", query: {comp: comp.id} }}><Edit className="h-4 w-4" /></Link>
+          <DeleteAlertDialog deleteId={comp.id} />
         </div>
       )
     }

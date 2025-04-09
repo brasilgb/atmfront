@@ -21,22 +21,22 @@ const items = [
     },
     {
         title: "Org",
-        url: "/admin/organizacoes",
+        url: "/admin/organizations",
         icon: Building2,
     },
     {
         title: "Fil",
-        url: "/admin/filiais",
+        url: "/admin/companies",
         icon: Building,
     },
     {
         title: "Settings",
-        url: "/admin/configuracoes",
+        url: "/admin/settings",
         icon: Settings,
     },
     {
         title: "user",
-        url: "/admin/usuarios",
+        url: "/admin/users",
         icon: User,
     },
 ]
