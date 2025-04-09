@@ -69,7 +69,7 @@ export function DataTable<TData, TValue>({
         </div>
         <div className="w-full flex justify-end">
           <Link
-            href="/admin/companies/create"
+            href={{pathname: '/admin/companies/create'}}
             className=" px-4 py-2 h-9 flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all bg-sky-700 text-white shadow-xs hover:bg-sky-700/90 cursor-pointer"
             >
             <Plus className="size-4" /><span>CriarFilial</span>

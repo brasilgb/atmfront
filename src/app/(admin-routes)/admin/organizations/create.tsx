@@ -38,7 +38,7 @@ export function CreateOrganization() {
     const router = useRouter();
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
-        defaultValues: {
+        defaultValues: { 
             name: "",
             cnpj: "",
             status: false,
