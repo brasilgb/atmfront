@@ -3,7 +3,6 @@ import { isCNPJ } from 'validation-br'
 
 export const formSchema = z.object({
     organizationId: z.string().min(1, { message: 'Selecione a organização!' }),
-    altername: z.string().min(1, { message: 'O nome deve ser preenchido!' }),
     corpreason: z.string().min(1, { message: 'A razão social deve ser preenchido!' }),
     cnpj: z.string().min(1, { message: 'O CNPJ deve ser preenchido!' }).refine((data) => isCNPJ(data), { message: 'O CNPJ deve ser válido!' }),
     subname: z.string().min(1, { message: 'O nome da filial deve ser preenchido!' }),

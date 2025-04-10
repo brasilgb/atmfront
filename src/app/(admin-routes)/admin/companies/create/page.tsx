@@ -14,11 +14,9 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import * as cnpj from 'validation-br/dist/cnpj';
-import * as postalCode from 'validation-br/dist/postalCode';
-import { zipCodeMask } from '@/lib/utils'
 import { Textarea } from '@/components/ui/textarea'
 import { Switch } from '@/components/ui/switch'
+import { maskCep, maskCnpj, maskPhone } from '@/lib/utils'
 
 export default function CreateCompany() {
   const [organizations, setOrganizations] = useState<any>([])
@@ -26,8 +24,6 @@ export default function CreateCompany() {
   const { loading, setLoading } = useAppContext();
   const { data: session } = useSession();
   const router = useRouter();
-
-
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -65,7 +61,6 @@ export default function CreateCompany() {
   }, [session]);
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
 
     setLoading(true)
     const response = await fetch('http://localhost:3000/company', {
@@ -97,7 +92,7 @@ export default function CreateCompany() {
     if (user && response.ok) {
       setLoading(false);
       form.reset()
-      router.replace('/admin/organizacoes')
+      router.replace('/admin/companies')
     }
   }
 
@@ -111,9 +106,13 @@ export default function CreateCompany() {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
-      })
-  })
+        form.setValue('state', data.uf);
+        form.setValue('city', data.localidade);
+        form.setValue('district', data.bairro);
+        form.setValue('street', data.logradouro);
+        form.setFocus('number');
+      });
+  });
 
   return (
     <section>
@@ -134,7 +133,7 @@ export default function CreateCompany() {
               </BreadcrumbItem>
               <BreadcrumbSeparator />
               <BreadcrumbItem>
-                <BreadcrumbPage>Breadcrumb</BreadcrumbPage>
+                <BreadcrumbPage>Criar filial</BreadcrumbPage>
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>
@@ -154,7 +153,7 @@ export default function CreateCompany() {
                     >
                       <FormLabel>CNPJ</FormLabel>
                       <FormControl>
-                        <Input placeholder="" {...field} value={cnpj.mask(field.value)} />
+                        <Input placeholder="" {...field} maxLength={18} value={maskCnpj(field.value)} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -227,6 +226,7 @@ export default function CreateCompany() {
                   )} />
               </div>
               <div className="md:grid grid-cols-6 gap-4">
+
                 <FormField
                   control={form.control}
                   name="cep"
@@ -236,39 +236,27 @@ export default function CreateCompany() {
                     >
                       <FormLabel>CEP</FormLabel>
                       <FormControl>
-                        <Input placeholder="" {...field} maxLength={9} value={zipCodeMask(field.value)} onBlurCapture={() => handleVCep(field.value)} />
+                        <Input placeholder="" {...field} maxLength={9} value={maskCep(field.value)} onBlurCapture={() => handleVCep(field.value)} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
                   )} />
+
                 <FormField
                   control={form.control}
-                  name="street"
-                  render={({ field }) => (
-                    <FormItem
-                      className="w-full col-span-2"
-                    >
-                      <FormLabel>Logradouro</FormLabel>
-                      <FormControl>
-                        <Input placeholder="" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )} />
-                <FormField
-                  control={form.control}
-                  name="number"
+                  name="state"
                   render={({ field }) => (
                     <FormItem
                       className="w-full"
                     >
-                      <FormLabel>Número</FormLabel>
+                      <FormLabel>UF</FormLabel>
                       <FormControl>
                         <Input placeholder="" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
                   )} />
+
                 <FormField
                   control={form.control}
                   name="city"
@@ -283,22 +271,7 @@ export default function CreateCompany() {
                       <FormMessage />
                     </FormItem>
                   )} />
-              </div>
-              <div className="md:grid grid-cols-5 gap-4">
-                <FormField
-                  control={form.control}
-                  name="state"
-                  render={({ field }) => (
-                    <FormItem
-                      className="w-full"
-                    >
-                      <FormLabel>Estado</FormLabel>
-                      <FormControl>
-                        <Input placeholder="" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )} />
+
                 <FormField
                   control={form.control}
                   name="district"
@@ -313,6 +286,40 @@ export default function CreateCompany() {
                       <FormMessage />
                     </FormItem>
                   )} />
+
+              </div>
+              <div className="md:grid grid-cols-5 gap-4">
+
+                <FormField
+                  control={form.control}
+                  name="street"
+                  render={({ field }) => (
+                    <FormItem
+                      className="w-full col-span-2"
+                    >
+                      <FormLabel>Logradouro</FormLabel>
+                      <FormControl>
+                        <Input placeholder="" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )} />
+
+                <FormField
+                  control={form.control}
+                  name="number"
+                  render={({ field }) => (
+                    <FormItem
+                      className="w-full"
+                    >
+                      <FormLabel>Número</FormLabel>
+                      <FormControl>
+                        <Input placeholder="" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )} />
+
                 <FormField
                   control={form.control}
                   name="telefone"
@@ -322,7 +329,7 @@ export default function CreateCompany() {
                     >
                       <FormLabel>Telefone</FormLabel>
                       <FormControl>
-                        <Input placeholder="" {...field} />
+                        <Input placeholder="" {...field} maxLength={15} value={maskPhone(field.value)} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>

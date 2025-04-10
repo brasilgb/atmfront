@@ -1,7 +1,6 @@
 export interface CompanyProps {
     id: string;
     organizationId: string;
-    altername: string;
     corpreason: string;
     cnpj: string;
     subnumber: string;

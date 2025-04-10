@@ -26,6 +26,7 @@ import { signIn } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import { useAppContext } from "@/contexts/AppContext"
 import { Loader } from "lucide-react"
+import { useState } from "react"
 
 const formSchema = z.object({
   email: z.string().email(),
@@ -35,6 +36,7 @@ const formSchema = z.object({
 })
 
 export default function Login() {
+  const [message, setMessage] = useState<any>(null)
   const {loading, setLoading} = useAppContext();
   
   const router = useRouter();
@@ -55,14 +57,16 @@ export default function Login() {
     });
 
     if (result?.error) {
-      console.log(result);
-      return
+      setMessage(!result.ok ? "Algo deu errado, seu email e/ou senha podem estar errados.":null);
+      setLoading(false)
+      return;
     }
 
-    if(result){
+    if(result?.ok){
       setLoading(false)
+      form.reset()
+      router.replace('/admin')
     }
-    router.replace('/admin')
   }
 
   return (
@@ -72,6 +76,7 @@ export default function Login() {
         <CardDescription>
         Digite seu e-mail e senha para entrar na sua conta
         </CardDescription>
+        {message && <div className="text-sm text-red-500">{message}</div>}
       </CardHeader>
       <CardContent>
         <Form {...form}>

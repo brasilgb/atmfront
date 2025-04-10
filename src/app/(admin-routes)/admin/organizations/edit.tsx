@@ -22,14 +22,15 @@ import { useState } from "react"
 import { Switch } from "@/components/ui/switch"
 import * as cnpj from "validation-br/dist/cnpj"
 import { isCNPJ } from "validation-br"
+import { maskCnpj } from "@/lib/utils"
 
 const formSchema = z.object({
     name: z.string().min(1, { message: 'O nome deve ser preenchido!' }),
-    cnpj: z.string().min(1, { message: 'O CNPJ deve ser preenchido!' }).refine((data) => isCNPJ(data),{message: "O CNPJ deve ser válido!"}),
+    cnpj: z.string().min(1, { message: 'O CNPJ deve ser preenchido!' }).refine((data) => isCNPJ(data), { message: "O CNPJ deve ser válido!" }),
     status: z.boolean(),
 })
 
-export function EditOrganization({org}: any) {
+export function EditOrganization({ org }: any) {
     const { loading, setLoading } = useAppContext();
     const { data: session } = useSession();
 
@@ -63,7 +64,7 @@ export function EditOrganization({org}: any) {
         if (user && response.ok) {
             setLoading(false);
             setOpen(false);
-            router.replace('/admin/organizacoes')
+            router.replace('/admin/organizations')
         }
     }
     return (
@@ -105,7 +106,7 @@ export function EditOrganization({org}: any) {
                                         >
                                             <FormLabel>CNPJ</FormLabel>
                                             <FormControl>
-                                                <Input placeholder="CNPJ" {...field} value={cnpj.mask((field.value))} />
+                                                <Input placeholder="CNPJ" {...field} maxLength={18} value={maskCnpj(field.value)} />
                                             </FormControl>
                                             <FormMessage />
                                         </FormItem>
@@ -121,9 +122,9 @@ export function EditOrganization({org}: any) {
                                         >
                                             <FormLabel>Status</FormLabel>
                                             <FormControl>
-                                                <Switch 
-                                                checked={field.value}
-                                                onCheckedChange={field.onChange}
+                                                <Switch
+                                                    checked={field.value}
+                                                    onCheckedChange={field.onChange}
                                                 />
                                             </FormControl>
                                             <FormMessage />
@@ -131,7 +132,7 @@ export function EditOrganization({org}: any) {
                                     )} />
                             </div>
                             <DialogFooter className="border-t pt-4">
-                                <Button type="submit" className="cursor-pointer">
+                                <Button type="submit" variant="add" className="cursor-pointer">
                                     <Save />{loading ? <Loader className="animate-spin" /> : 'Salvar'}
                                 </Button>
                             </DialogFooter>

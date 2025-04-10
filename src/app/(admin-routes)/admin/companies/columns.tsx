@@ -106,7 +106,7 @@ export const columns: ColumnDef<CompanyProps>[] = [
         <div className="flex items-center justify-end gap-2">
           <Link 
           className="flex items-center justify-center gap-2 p-2.5 whitespace-nowrap rounded-md text-sm font-medium transition-all bg-orange-500 text-primary-foreground shadow-xs hover:bg-orange-500/90"
-          href={{ pathname: "/admin/filiais/edit", query: {comp: comp.id} }}><Edit className="h-4 w-4" /></Link>
+          href={{ pathname: "/admin/companies/edit", query: {id: comp.id} }}><Edit className="h-4 w-4" /></Link>
           <DeleteAlertDialog deleteId={comp.id} />
         </div>
       )

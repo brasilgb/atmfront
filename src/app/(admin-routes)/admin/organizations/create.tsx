@@ -23,6 +23,7 @@ import { useState } from "react"
 import { Switch } from "@/components/ui/switch"
 import { isCNPJ } from 'validation-br'
 import * as cnpj from 'validation-br/dist/cnpj';
+import { maskCnpj } from "@/lib/utils"
 
 const formSchema = z.object({
     name: z.string().min(1, { message: 'O nome deve ser preenchido!' }),
@@ -64,7 +65,7 @@ export function CreateOrganization() {
             setLoading(false);
             form.reset()
             setOpen(false);
-            router.replace('/admin/organizacoes')
+            router.replace('/admin/organizations')
         }
     }
     return (
@@ -106,7 +107,7 @@ export function CreateOrganization() {
                                         >
                                             <FormLabel>CNPJ</FormLabel>
                                             <FormControl>
-                                                <Input placeholder="CNPJ" {...field} value={cnpj.mask((field.value))} />
+                                                <Input placeholder="CNPJ" {...field} maxLength={18} value={maskCnpj(field.value)} />
                                             </FormControl>
                                             <FormMessage />
                                         </FormItem>

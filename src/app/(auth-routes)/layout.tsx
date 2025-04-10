@@ -16,7 +16,7 @@ export default async function PrivateLayout({ children }: PrivateLayoutProps) {
 
   return (
     <div className='min-h-screen bg-sky-500 flex items-center justify-center'>
-      <div className="w-full max-w-sm">
+      <div className="w-full max-w-md">
         {children}
       </div>
     </div>
