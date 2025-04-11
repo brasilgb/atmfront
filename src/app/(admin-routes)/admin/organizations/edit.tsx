@@ -20,7 +20,6 @@ import { FilePenLine, Loader, Save } from "lucide-react"
 import { useSession } from "next-auth/react";
 import { useState } from "react"
 import { Switch } from "@/components/ui/switch"
-import * as cnpj from "validation-br/dist/cnpj"
 import { isCNPJ } from "validation-br"
 import { maskCnpj } from "@/lib/utils"
 

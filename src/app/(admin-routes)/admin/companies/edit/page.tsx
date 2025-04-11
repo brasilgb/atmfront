@@ -14,15 +14,14 @@ import { useRouter } from 'next/navigation'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
 import { Switch } from '@/components/ui/switch'
 import { maskCep, maskCnpj, maskPhone } from '@/lib/utils'
 import { useSearchParams } from 'next/navigation'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 
 export default function EditCompany() {
   const [organizations, setOrganizations] = useState<any>([])
-  const [byIdCompany, setByIdCompany] = useState<any>([])
   const { loading, setLoading } = useAppContext();
   const { data: session } = useSession();
   const router = useRouter();
@@ -31,7 +30,7 @@ export default function EditCompany() {
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues:async () => {
+    defaultValues: async () => {
       return fetch(`http://localhost:3000/company/show?company_id=${searchid}`, {
         method: 'GET',
         headers: {
@@ -60,7 +59,7 @@ export default function EditCompany() {
             observation: data?.observation,
           }
         }) as any;
-    } ,
+    },
   }
   )
 
@@ -109,7 +108,6 @@ export default function EditCompany() {
 
     if (user && response.ok) {
       setLoading(false);
-      form.reset()
       router.replace('/admin/companies')
     }
   }
@@ -199,17 +197,23 @@ export default function EditCompany() {
                     >
                       <FormLabel>Organização</FormLabel>
                       <FormControl>
-                        <Select {...field} onValueChange={field.onChange} defaultValue={field.value} >
+                        <Select {...field} onValueChange={field.onChange} >
                           <SelectTrigger className="w-full">
-                            <SelectValue placeholder="Selecione a organização" />
+                            <SelectValue />
                           </SelectTrigger>
                           <SelectContent>
-                            {organizations?.map((organization: any) => (
+                            {organizations!.map((organization: any) => (
                               <SelectItem key={organization.id} value={organization.id}>{organization.name}</SelectItem>
                             ))}
                           </SelectContent>
                         </Select>
-
+                        {/* <select {...field} onVolumeChange={field.onChange} value={field.value} 
+                        className="border-input data-[placeholder]:text-muted-foreground [&_svg:not([class*='text-'])]:text-muted-foreground focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:bg-input/30 dark:hover:bg-input/50 flex w-fit items-center justify-between gap-2 rounded-md border bg-transparent px-3 py-2 text-sm whitespace-nowrap shadow-xs transition-[color,box-shadow] outline-none focus-visible:ring-[3px] disabled:cursor-not-allowed disabled:opacity-50 data-[size=default]:h-9 data-[size=sm]:h-8 *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex *:data-[slot=select-value]:items-center *:data-[slot=select-value]:gap-2 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 w-full"
+                        >
+                          {organizations?.map((organization: any) => (
+                            <option key={organization.id} value={organization.id}>{organization.name}</option>
+                          ))}
+                        </select> */}
                       </FormControl>
                       <FormMessage />
                     </FormItem>

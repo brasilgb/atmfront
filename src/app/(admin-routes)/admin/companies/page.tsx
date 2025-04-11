@@ -43,7 +43,6 @@ export default async function Filiais() {
       <Card className='p-4'>
         <DataTable columns={columns} data={companies} />
       </Card>
-
     </section>
   )
 }

@@ -1,6 +1,5 @@
 import React from 'react'
-import { Card, CardContent, CardHeader } from '@/components/ui/card'
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
+import { Card } from '@/components/ui/card'
 import {
   Breadcrumb,
   BreadcrumbItem,
