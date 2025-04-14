@@ -53,26 +53,26 @@ export function DataTable<TData, TValue>({
       columnFilters,
     },
   })
-
+  
   return (
     <div>
       <div className="flex items-center py-4 border-b">
         <div className="relative w-full">
           <Input
-            placeholder="Filtrar por organização..."
-            value={(table.getColumn("subname")?.getFilterValue() as string) ?? ""}
+            placeholder="Filtrar por usuário..."
+            value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
             onChange={(event) =>
-              table.getColumn("subname")?.setFilterValue(event.target.value)
+              table.getColumn("name")?.setFilterValue(event.target.value)
             }
           />
           <Search className="w-6 h-6 text-gray-400 absolute top-1.5 right-1.5" />
         </div>
         <div className="w-full flex justify-end">
           <Link
-            href={{pathname: '/admin/companies/create'}}
+            href={{pathname: '/admin/users/create'}}
             className=" px-4 py-2 h-9 flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all bg-sky-700 text-white shadow-xs hover:bg-sky-700/90 cursor-pointer"
             >
-            <Plus className="size-4" /><span>Criar filial</span>
+            <Plus className="size-4" /><span>Criar Usuário</span>
           </Link>
         </div>
       </div>

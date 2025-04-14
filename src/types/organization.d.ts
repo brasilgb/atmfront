@@ -3,5 +3,4 @@ export interface OrganizationProps {
     name: string;
     cnpj: string;
     status: string;
-    createdAt: string;
 }

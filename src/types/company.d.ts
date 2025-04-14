@@ -1,4 +1,5 @@
 export interface CompanyProps {
+    createdAt: any;
     id: string;
     organizationId: string;
     corpreason: string;
