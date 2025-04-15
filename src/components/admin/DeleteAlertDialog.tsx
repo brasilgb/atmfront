@@ -16,7 +16,7 @@ import { Loader, Trash2 } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-export function DeleteAlertDialog({ deleteId }: any) {
+export function DeleteAlertDialog({ deleteId, module, query, route }: any) {
     
     const { loading, setLoading } = useAppContext();
     const { data: session } = useSession();
@@ -25,7 +25,7 @@ export function DeleteAlertDialog({ deleteId }: any) {
     
     async function onDelete() {
         setLoading(true)
-        const response = await fetch(`http://localhost:3000/organization/remove?organization_id=${deleteId}`, {
+        const response = await fetch(`http://localhost:3000/${module}/remove?${query}=${deleteId}`, {
             method: 'DELETE',
             headers: {
                 'Content-type': 'Application/json',
@@ -36,7 +36,7 @@ export function DeleteAlertDialog({ deleteId }: any) {
         if (user && response.ok) {
             setLoading(false);
             setOpen(false);
-            router.replace('/admin/organizacoes')
+            router.replace(`/admin/${route}`)
         }
     }
 

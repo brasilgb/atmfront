@@ -95,7 +95,7 @@ export const columns: ColumnDef<OrganizationProps>[] = [
         <div className="flex items-center justify-end gap-2">
           <Button variant="outline" size="icon"><DatabaseBackup /></Button>
           <EditOrganization org={orgs} />
-          <DeleteAlertDialog deleteId={orgs.id} />
+          <DeleteAlertDialog deleteId={orgs.id} module="organization" route="organizations" query="organization_id"  />
         </div>
       )
     }
