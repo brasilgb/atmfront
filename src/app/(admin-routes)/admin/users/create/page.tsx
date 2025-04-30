@@ -22,7 +22,7 @@ export default function CreateUser() {
   const { loading, setLoading } = useAppContext();
   const { data: session } = useSession();
   const router = useRouter();
-
+  
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {

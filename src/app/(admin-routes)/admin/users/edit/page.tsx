@@ -42,8 +42,8 @@ export default function CreateUser() {
             organizationId: data?.organizationId,
             name: data?.name,
             email: data?.email,
-            is_admin: false,
-            status: false,
+            is_admin: data?.is_admin,
+            status: data?.status,
             roles: data?.roles
           }
         }) as any;
@@ -135,7 +135,7 @@ export default function CreateUser() {
                             <SelectValue placeholder="Selecione a organização" />
                           </SelectTrigger>
                           <SelectContent>
-                            {organizations?.map((organization: any) => (
+                            {organizations||[]?.map((organization: any) => (
                               <SelectItem key={organization.id} value={organization.id}>{organization.name}</SelectItem>
                             ))}
                           </SelectContent>
