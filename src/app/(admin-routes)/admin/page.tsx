@@ -1,4 +1,5 @@
-import KpisApp from '@/components/charts/KpisApp'
+
+import KpisApp from '@/components/Charts/KpisApp'
 import React from 'react'
 
 export default async function Admin() {

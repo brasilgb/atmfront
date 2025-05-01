@@ -1,5 +1,5 @@
 import React from 'react'
-import DropDownMenu from '../public/DropDownMenu'
+import DropDownMenu from './DropDownMenu'
 
 export default function Header() {
   return (
