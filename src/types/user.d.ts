@@ -1,7 +1,7 @@
 export interface UserProps {
     id: string;
-    OrganizationId: string;
-    CompanyId: string;
+    organizationId: string;
+    companyId: string;
     name     : string;
     email    : string;
     password : string;

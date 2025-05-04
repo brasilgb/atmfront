@@ -9,6 +9,8 @@ declare module 'next-auth' {
             roles: string;
             token: string;
             createdAt: string;
+            organizationId: string;
+            filial: string;
         }
     }
 }
