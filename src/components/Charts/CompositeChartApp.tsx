@@ -38,8 +38,8 @@ console.log(data);
     const chartData = data?.map((value: any) => ({
         diasemana: moment(value?.resumo_datmvt).format("DD"),
         vendas: parseFloat(value?.resumo_valven),
-        margem: (parseFloat(value?.resumo_margem) * parseFloat(value?.resumo_valven)) / 100,
-        meta: parseFloat(value?.resumo_metdia)
+        meta: (parseFloat(value?.resumo_metdia) * parseFloat(value?.resumo_valven)) / 100,
+        margem: parseFloat(value?.resumo_margem)
     }));
 
     return (
@@ -49,7 +49,7 @@ console.log(data);
                 <CardDescription>{moment(data[0]?.anomes).format("MM/YYYY")}</CardDescription>
             </CardHeader>
             <CardContent>
-                <ChartContainer config={chartConfig} className="max-h-[250px] w-full">
+                <ChartContainer config={chartConfig} className="max-h-[230px] w-full">
                     <ComposedChart width={730} height={250} data={chartData}>
                         <XAxis dataKey="diasemana" />
                         <YAxis />
@@ -60,11 +60,11 @@ console.log(data);
                                 <div>
                                     <p className="flex items-center gap-2">
                                         {name == 'vendas' && <SquareCheck color={props.color} className={`w-4 h-4`} />}
-                                        {name == 'vendas' && name + ': ' + maskMoney(value)}
+                                        {name == 'vendas' && name + ': ' + (value)}
                                     </p>
                                     <p className="flex items-center gap-2">
                                         {name == 'meta' && <SquareCheck color={props.color} className={`w-4 h-4`} />}
-                                        {name == 'meta' && name + ': ' + maskMoney(value)}
+                                        {name == 'meta' && name + ': ' + (value)}
                                     </p>
                                     <p className="flex items-center gap-2">
                                         {name == 'margem' && <SquareCheck color={props.color} className={`w-4 h-4`} />}
@@ -83,7 +83,7 @@ console.log(data);
             </CardContent>
             <CardFooter className="flex-col items-start gap-2 text-sm">
                 <div className="flex gap-2 font-medium leading-none">
-                    Sendo a meta de {maskMoney(data[0]?.valmeta)} para este mês. <TrendingUp className="h-4 w-4" />
+                    Sendo a meta de {(data[0]?.valmeta)} para este mês. <TrendingUp className="h-4 w-4" />
                 </div>
                 <div className="leading-none text-muted-foreground">
                     Mostrando as vendas e as margens alcançadas para os {data?.length} dias do mês

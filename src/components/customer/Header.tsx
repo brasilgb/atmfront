@@ -18,8 +18,10 @@ import { usePathname } from 'next/navigation'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '../ui/dropdown-menu'
 import { User } from 'lucide-react'
 import ButtonLogout from '../public/ButtonLogout'
+import { useAppContext } from '@/contexts/AppContext'
 
 export default function Header() {
+    const { user } = useAppContext();
     const pathname = usePathname()
     return (
         <header className='w-full bg-white shadow-md py-1'>
@@ -61,7 +63,7 @@ export default function Header() {
                         <DropdownMenuContent className='mr-2 w-48 mt-2 text-gray-600'>
                             <DropdownMenuLabel className='flex items-center gap-1'>
                                 <User className='h-4 w-4' />
-                                {/* <span>{session?.user.name}</span> */}
+                                <span>{user?.name}</span>
                             </DropdownMenuLabel>
                             <DropdownMenuSeparator />
                             <DropdownMenuItem>Profile</DropdownMenuItem>

@@ -15,7 +15,6 @@ import { columns } from "./columns"
 import { DataTable } from "./data-table"
 export default async function Organizacoes() {
   const session = await getServerSession(nextAuthOptions);
-
   let data = await fetch('http://localhost:3000/organization/all', {
     method: 'GET',
     headers: {
