@@ -7,9 +7,10 @@ import { maskMoney } from '@/lib/utils';
 import { RadialChartApp } from '@/components/charts/RadialChartApp';
 import CompositeChartApp from '@/components/charts/CompositeChartApp';
 import Loading from '@/components/loading';
+import moment from 'moment';
 
 export default function Customer() {
-    const { companyNumber, loading, setLoading, user } = useAppContext();
+    const { selectedDate, companyNumber, loading, setLoading, user } = useAppContext();
     
     const [totais, setTotais] = useState<any>([]);
     const [graficos, setGraficos] = useState<any>([]);
@@ -17,7 +18,7 @@ export default function Customer() {
     useEffect(() => {
         setLoading(true);
         const getTotais = async () => {
-            await fetch(`http://localhost:3000/data-total?org=${user?.organizationId}&com=${companyNumber}&dat=20240503`, {
+            await fetch(`http://localhost:3000/data-total?org=${user?.organizationId}&com=${companyNumber}&dat=${moment(selectedDate).format('YYYYMMDD')}`, {
                 method: 'GET',
                 headers: {
                     'Content-type': 'Application/json',
@@ -31,12 +32,12 @@ export default function Customer() {
                 });
         }
         getTotais();
-    }, [user, companyNumber]);
+    }, [user, companyNumber, selectedDate]);
 
     useEffect(() => {
         setLoading(true);
         const getGraficos = async () => {
-            await fetch(`http://localhost:3000/data-chart?org=${user?.organizationId}&com=${companyNumber}&my=202405`, {
+            await fetch(`http://localhost:3000/data-chart?org=${user?.organizationId}&com=${companyNumber}&my=${moment(selectedDate).format('YYYYMM')}`, {
                 method: 'GET',
                 headers: {
                     'Content-type': 'Application/json',
@@ -50,14 +51,14 @@ export default function Customer() {
                 });
         }
         getGraficos();
-    }, [user, companyNumber]);
+    }, [user, companyNumber, selectedDate]);
 
     if(loading){
         return <Loading />
     }
 
     return (
-        <div className='flex flex-col gap-4 p-4 w-full'>
+        <div className='flex flex-col gap-4 px-4 w-full pb-4'>
             <div className="grid grid-cols-4 gap-4">
                 <Card className="">
                     <CardHeader className="relative">
@@ -131,7 +132,7 @@ export default function Customer() {
                 <RadialChartApp data={totais?.total_permet} title="Meta" />
             </div>
 
-            <div className='h-96'>
+            <div className='h-[180px]'>
                 {graficos.length > 0 && <CompositeChartApp data={graficos} />}
             </div>
         </div>

@@ -1,6 +1,6 @@
 'use client'
 import { SquareCheck, TrendingUp } from "lucide-react"
-import { Area, Bar, BarChart, CartesianGrid, ComposedChart, Legend, Line, XAxis, YAxis } from "recharts"
+import { Area, Bar, CartesianGrid, ComposedChart, Legend, Line, XAxis, YAxis } from "recharts"
 
 import {
     Card,
@@ -17,7 +17,6 @@ import {
     ChartTooltipContent,
 } from "@/components/ui/chart"
 import moment from "moment"
-import { maskMoney } from "@/lib/utils"
 
 export const description = "A bar chart"
 
@@ -33,7 +32,6 @@ interface ComposeChartProps {
     data: any;
 }
 export default function CompositeChartApp({ data }: ComposeChartProps) {
-console.log(data);
 
     const chartData = data?.map((value: any) => ({
         diasemana: moment(value?.resumo_datmvt).format("DD"),
@@ -49,8 +47,8 @@ console.log(data);
                 <CardDescription>{moment(data[0]?.anomes).format("MM/YYYY")}</CardDescription>
             </CardHeader>
             <CardContent>
-                <ChartContainer config={chartConfig} className="max-h-[230px] w-full">
-                    <ComposedChart width={730} height={250} data={chartData}>
+                <ChartContainer config={chartConfig} className="max-h-[180px] w-full">
+                    <ComposedChart width={730} height={180} data={chartData}>
                         <XAxis dataKey="diasemana" />
                         <YAxis />
                         {/* //console.log("V", value, "N", name, "P", payload) */}

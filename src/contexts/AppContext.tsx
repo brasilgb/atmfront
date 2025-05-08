@@ -13,8 +13,9 @@ export const AppProvider = ({ children }: AppProviderProps) => {
   const { data: session } = useSession();
   const [user, setUser] = useState<any>([]);
   const [loading, setLoading] = useState<boolean>(false);
-  const [companyNumber, setCompanyNumber] = useState<number>(0);
-  
+  const [companyNumber, setCompanyNumber] = useState<number>(1);
+  const [selectedDate, setSelectedDate] = useState<Date>();
+
   useEffect(() => {
     const getUser = async () => {
       setUser(session?.user)
@@ -28,7 +29,9 @@ export const AppProvider = ({ children }: AppProviderProps) => {
       setLoading,
       companyNumber,
       setCompanyNumber,
-      user
+      user,
+      selectedDate,
+      setSelectedDate
     }}>
       {children}
     </AppContext.Provider>
