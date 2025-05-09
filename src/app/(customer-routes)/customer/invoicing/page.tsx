@@ -31,7 +31,8 @@ export default function Invoicing() {
     }, [user, companyNumber, selectedDate]);
 
     return (
-        <Tabs defaultValue="summary" className="w-[400px]">
+        <div className='px-4'>
+            <Tabs defaultValue="summary" className="w-[400px]">
             <TabsList>
                 <TabsTrigger value="summary">Resumo</TabsTrigger>
                 <TabsTrigger value="association">Associação</TabsTrigger>
@@ -43,5 +44,6 @@ export default function Invoicing() {
                 <Association />
             </TabsContent>
         </Tabs>
+        </div>
     )
 }
