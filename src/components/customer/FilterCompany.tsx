@@ -8,9 +8,12 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { useAppContext } from '@/contexts/AppContext';
+import Loading from '../loading';
 
 export default function FilterCompany({ data }: any) {
+
   const { setCompanyNumber } = useAppContext();
+
   const handleValueCity = (value: string) => {
     setCompanyNumber(value)
   };

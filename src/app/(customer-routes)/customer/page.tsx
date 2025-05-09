@@ -10,8 +10,8 @@ import Loading from '@/components/loading';
 import moment from 'moment';
 
 export default function Customer() {
-    const { selectedDate, companyNumber, loading, setLoading, user } = useAppContext();
-    
+    const { selectedDate, companyNumber, loading, setLoading, user, status } = useAppContext();
+
     const [totais, setTotais] = useState<any>([]);
     const [graficos, setGraficos] = useState<any>([]);
 
@@ -47,94 +47,96 @@ export default function Customer() {
                 .then((res) => res.json())
                 .then((data) => {
                     setLoading(false);
-                    setGraficos(data?data:[]);
+                    setGraficos(data ? data : []);
                 });
         }
         getGraficos();
     }, [user, companyNumber, selectedDate]);
 
-    if(loading){
-        return <Loading />
+
+    if (status === 'loading' && loading) {
+        return <Loading />;
     }
+    if (status === 'authenticated' && user) {
+        return (
+            <div className='flex flex-col gap-4 px-4 w-full pb-4'>
+                <div className="grid grid-cols-4 gap-4">
+                    <Card className="">
+                        <CardHeader className="relative">
+                            <CardDescription>Meta</CardDescription>
+                            <CardTitle className="@[250px]/card:text-3xl text-2xl font-semibold tabular-nums">
+                                R$ {maskMoney(totais?.total_meta)}
+                            </CardTitle>
+                            <div className="absolute right-4 top-4">
+                                <ChartLine className="size-8" />
+                            </div>
+                        </CardHeader>
+                        <CardFooter className="flex-col items-start gap-1 text-sm">
+                            <div className="line-clamp-1 flex gap-2 font-medium">
+                                Meta Mensal {('20250504').slice(0, 6)}
+                            </div>
+                        </CardFooter>
+                    </Card>
+                    <Card className="">
+                        <CardHeader className="relative">
+                            <CardDescription>Faturamento</CardDescription>
+                            <CardTitle className="@[250px]/card:text-3xl text-2xl font-semibold tabular-nums">
+                                R$ {maskMoney(totais?.total_valven)}
+                            </CardTitle>
+                            <div className="absolute right-4 top-4">
+                                <HandCoins className="size-8" />
+                            </div>
+                        </CardHeader>
+                        <CardFooter className="flex-col items-start gap-1 text-sm">
+                            <div className="line-clamp-1 flex gap-2 font-medium">
+                                Faturamento período
+                            </div>
+                        </CardFooter>
+                    </Card>
+                    <Card className="">
+                        <CardHeader className="relative">
+                            <CardDescription>Margem</CardDescription>
+                            <CardTitle className="@[250px]/card:text-3xl text-2xl font-semibold tabular-nums">
+                                R$ {maskMoney(totais?.total_margem)}
+                            </CardTitle>
+                            <div className="absolute right-4 top-4">
+                                <ChartNoAxesCombined className="size-8" />
+                            </div>
+                        </CardHeader>
+                        <CardFooter className="flex-col items-start gap-1 text-sm">
+                            <div className="line-clamp-1 flex gap-2 font-medium">
+                                Valor juro
+                            </div>
+                        </CardFooter>
+                    </Card>
+                    <Card className="">
+                        <CardHeader className="relative">
+                            <CardDescription>Inadimplência</CardDescription>
+                            <CardTitle className="@[250px]/card:text-3xl text-2xl font-semibold tabular-nums">
+                                R$ {maskMoney(totais?.total_valina)}
+                            </CardTitle>
+                            <div className="absolute right-4 top-4">
+                                <TrendingUpIcon className="size-8" />
+                            </div>
+                        </CardHeader>
+                        <CardFooter className="flex-col items-start gap-1 text-sm">
+                            <div className="line-clamp-1 flex gap-2 font-medium">
+                                Valor inadimplência
+                            </div>
+                        </CardFooter>
+                    </Card>
+                </div>
+                <div className="grid grid-cols-4 gap-4">
+                    <RadialChartApp data={totais?.total_margem} title="Margem" />
+                    <RadialChartApp data={totais?.total_permet} title="Meta" />
+                    <RadialChartApp data={totais?.total_margem} title="Margem" />
+                    <RadialChartApp data={totais?.total_permet} title="Meta" />
+                </div>
 
-    return (
-        <div className='flex flex-col gap-4 px-4 w-full pb-4'>
-            <div className="grid grid-cols-4 gap-4">
-                <Card className="">
-                    <CardHeader className="relative">
-                        <CardDescription>Meta</CardDescription>
-                        <CardTitle className="@[250px]/card:text-3xl text-2xl font-semibold tabular-nums">
-                            R$ {maskMoney(totais?.total_meta)}
-                        </CardTitle>
-                        <div className="absolute right-4 top-4">
-                            <ChartLine className="size-8" />
-                        </div>
-                    </CardHeader>
-                    <CardFooter className="flex-col items-start gap-1 text-sm">
-                        <div className="line-clamp-1 flex gap-2 font-medium">
-                            Meta Mensal {('20250504').slice(0, 6)}
-                        </div>
-                    </CardFooter>
-                </Card>
-                <Card className="">
-                    <CardHeader className="relative">
-                        <CardDescription>Faturamento</CardDescription>
-                        <CardTitle className="@[250px]/card:text-3xl text-2xl font-semibold tabular-nums">
-                            R$ {maskMoney(totais?.total_valven)}
-                        </CardTitle>
-                        <div className="absolute right-4 top-4">
-                            <HandCoins className="size-8" />
-                        </div>
-                    </CardHeader>
-                    <CardFooter className="flex-col items-start gap-1 text-sm">
-                        <div className="line-clamp-1 flex gap-2 font-medium">
-                            Faturamento período
-                        </div>
-                    </CardFooter>
-                </Card>
-                <Card className="">
-                    <CardHeader className="relative">
-                        <CardDescription>Margem</CardDescription>
-                        <CardTitle className="@[250px]/card:text-3xl text-2xl font-semibold tabular-nums">
-                            R$ {maskMoney(totais?.total_margem)}
-                        </CardTitle>
-                        <div className="absolute right-4 top-4">
-                            <ChartNoAxesCombined className="size-8" />
-                        </div>
-                    </CardHeader>
-                    <CardFooter className="flex-col items-start gap-1 text-sm">
-                        <div className="line-clamp-1 flex gap-2 font-medium">
-                            Valor juro
-                        </div>
-                    </CardFooter>
-                </Card>
-                <Card className="">
-                    <CardHeader className="relative">
-                        <CardDescription>Inadimplência</CardDescription>
-                        <CardTitle className="@[250px]/card:text-3xl text-2xl font-semibold tabular-nums">
-                            R$ {maskMoney(totais?.total_valina)}
-                        </CardTitle>
-                        <div className="absolute right-4 top-4">
-                            <TrendingUpIcon className="size-8" />
-                        </div>
-                    </CardHeader>
-                    <CardFooter className="flex-col items-start gap-1 text-sm">
-                        <div className="line-clamp-1 flex gap-2 font-medium">
-                            Valor inadimplência
-                        </div>
-                    </CardFooter>
-                </Card>
+                <div className='h-[180px]'>
+                    {graficos.length > 0 && <CompositeChartApp data={graficos} />}
+                </div>
             </div>
-            <div className="grid grid-cols-4 gap-4">
-                <RadialChartApp data={totais?.total_margem} title="Margem" />
-                <RadialChartApp data={totais?.total_permet} title="Meta" />
-                <RadialChartApp data={totais?.total_margem} title="Margem" />
-                <RadialChartApp data={totais?.total_permet} title="Meta" />
-            </div>
-
-            <div className='h-[180px]'>
-                {graficos.length > 0 && <CompositeChartApp data={graficos} />}
-            </div>
-        </div>
-    )
+        );
+    }
 }

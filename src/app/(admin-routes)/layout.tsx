@@ -1,7 +1,4 @@
-import { getServerSession } from 'next-auth';
 import React, { ReactNode } from 'react'
-import { nextAuthOptions } from '../api/auth/[...nextauth]/route';
-import { redirect } from 'next/navigation';
 import Footer from '@/components/admin/Footer';
 import Header from '@/components/admin/Header';
 import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
@@ -10,12 +7,7 @@ import { AppSidebar } from '@/components/admin/AppSidebar';
 interface PrivateLayoutProps {
   children: ReactNode;
 }
-export default async function PrivateLayout({ children }: PrivateLayoutProps) {
-  const session = await getServerSession(nextAuthOptions);
-
-  if (!session) {
-    redirect('/auth/login')
-  }
+export default function PrivateLayout({ children }: PrivateLayoutProps) {
 
   return (
     <SidebarProvider>

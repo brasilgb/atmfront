@@ -3,9 +3,10 @@ import React, { useEffect, useState } from 'react'
 import { FilterDate } from './FilterDate'
 import FilterCompany from './FilterCompany'
 import { useAppContext } from '@/contexts/AppContext';
+import Loading from '../loading';
 
 export default function FilterBAr() {
-  const { user } = useAppContext();
+  const { user, status } = useAppContext();
   const [companyOrg, setCompanyOrg] = useState<any>([]);
 
   useEffect(() => {
@@ -19,18 +20,22 @@ export default function FilterBAr() {
       })
         .then((res) => res.json())
         .then((data) => {
-          console.log(data)
           setCompanyOrg(data);
         });
     }
     getCompanyOrg();
   }, [user]);
 
-  return (
-    <div className='flex items-center justify-start gap-6 px-4 py-4'>
-      <FilterDate />
-      <FilterCompany data={companyOrg} />
-    </div>
-  )
+  if (status === 'loading') {
+    return <Loading />;
+  }
+  if (status === 'authenticated' && user) {
+    return (
+      <div className='flex items-center justify-start gap-6 px-4 py-4'>
+        <FilterDate />
+        <FilterCompany data={companyOrg} />
+      </div>
+    );
+  }
 }
 
