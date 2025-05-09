@@ -1,7 +1,10 @@
+import { DataTable } from '@/components/data-table';
 import React from 'react'
+import { columns } from './columns';
 
-export default function Association() {
+export default function Association({data}: any) {
+  
   return (
-    <div>Association</div>
+    <div><DataTable columns={columns} data={data} /></div>
   )
 }

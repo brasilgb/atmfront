@@ -11,11 +11,12 @@ export default function Invoicing() {
 
     const { selectedDate, companyNumber, loading, setLoading, user, status } = useAppContext();
     const [sales, setSales] = useState<any>([]);
+    const [associations, setAssociations] = useState<any>([]);
 
     useEffect(() => {
         setLoading(true);
         const getSales = async () => {
-            await fetch(`http://localhost:3000/data-sale?org=${user?.organizationId}&com=${companyNumber}&dat=${moment(selectedDate).format('YYYYMMDD')}`, {
+            await fetch(`http://localhost:3000/data-sale?org=${user?.organizationId}&com=${companyNumber}&dat=${moment(selectedDate).format('YYYYMM')}`, {
                 method: 'GET',
                 headers: {
                     'Content-type': 'Application/json',
@@ -30,43 +31,44 @@ export default function Invoicing() {
         };
         getSales();
     }, [user, companyNumber, selectedDate]);
-<<<<<<< HEAD
+
+    useEffect(() => {
+        setLoading(true);
+        const getAssociations = async () => {
+            await fetch(`http://localhost:3000/data-assoc?org=${user?.organizationId}&com=${companyNumber}&dat=${moment(selectedDate).format('YYYYMMDD')}`, {
+                method: 'GET',
+                headers: {
+                    'Content-type': 'Application/json',
+                    Authorization: `Bearer ${user?.token}`
+                }
+            })
+                .then((res) => res.json())
+                .then((data) => {
+                    setAssociations(data);
+                    setLoading(false);
+                });
+        };
+        getAssociations();
+    }, [user, companyNumber, selectedDate]);
+
+
     if (status === 'loading' && loading) {
         return <Loading />;
     }
     if (status === 'authenticated' && user) {
         return (
-            <Tabs defaultValue="summary" className="w-full bg-red-100">
+            <Tabs defaultValue="summary" className="w-full">
                 <TabsList className='w-full'>
                     <TabsTrigger value="summary" className='text-base font-semibold text-gray-600 cursor-pointer'>Resumo</TabsTrigger>
                     <TabsTrigger value="association" className='text-base font-semibold text-gray-600 cursor-pointer'>Associação</TabsTrigger>
                 </TabsList>
                 <TabsContent value="summary">
-                    <Summary />
+                    <Summary data={sales} />
                 </TabsContent>
                 <TabsContent value="association">
-                    <Association />
+                    <Association data={associations} />
                 </TabsContent>
             </Tabs>
         );
     }
-=======
-
-    return (
-        <div className='px-4'>
-            <Tabs defaultValue="summary" className="w-[400px]">
-            <TabsList>
-                <TabsTrigger value="summary">Resumo</TabsTrigger>
-                <TabsTrigger value="association">Associação</TabsTrigger>
-            </TabsList>
-            <TabsContent value="summary">
-                <Summary />
-            </TabsContent>
-            <TabsContent value="association">
-                <Association />
-            </TabsContent>
-        </Tabs>
-        </div>
-    )
->>>>>>> 95db336fd3db0223a3ec3bd8123e837afc91384f
 }

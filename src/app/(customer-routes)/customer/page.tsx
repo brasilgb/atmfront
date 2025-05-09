@@ -6,8 +6,8 @@ import { ChartLine, ChartNoAxesCombined, HandCoins, TrendingUpIcon } from 'lucid
 import { maskMoney } from '@/lib/utils';
 import Loading from '@/components/loading';
 import moment from 'moment';
-import { RadialChartApp } from '@/components/Charts/RadialChartApp';
-import CompositeChartApp from '@/components/Charts/CompositeChartApp';
+import { RadialChartApp } from '@/components/charts/RadialChartApp';
+import CompositeChartApp from '@/components/charts/CompositeChartApp';
 
 export default function Customer() {
     const { selectedDate, companyNumber, loading, setLoading, user, status } = useAppContext();
