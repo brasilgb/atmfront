@@ -36,7 +36,7 @@ export default function CompositeChartApp({ data }: ComposeChartProps) {
     const chartData = data?.map((value: any) => ({
         diasemana: moment(value?.resumo_datmvt).format("DD"),
         vendas: parseFloat(value?.resumo_valven),
-        meta: (parseFloat(value?.resumo_metdia) * parseFloat(value?.resumo_valven)) / 100,
+        meta: (parseFloat(value?.resumo_valven) / parseFloat(value?.resumo_metdia)) * 100,
         margem: parseFloat(value?.resumo_margem)
     }));
 

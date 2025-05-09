@@ -30,8 +30,8 @@ export function FilterDate() {
     <>
       <Popover open={calendarOpen} onOpenChange={setCalendarOpen}>
         <PopoverTrigger asChild>
-          <Button 
-          variant={"outline"}
+          <Button
+            variant={"outline"}
             className={cn(
               "w-[240px] pl-3 text-left font-normal",
               !selectedDate && "text-muted-foreground"
@@ -47,7 +47,7 @@ export function FilterDate() {
         </PopoverTrigger>
         <PopoverContent className="w-auto p-0" align="start">
           <Calendar
-          locale={ptBR}
+            locale={ptBR}
             mode="single"
             selected={selectedDate}
             onSelect={setSelectedDate}

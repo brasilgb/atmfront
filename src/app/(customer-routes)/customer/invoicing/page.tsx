@@ -30,6 +30,7 @@ export default function Invoicing() {
         };
         getSales();
     }, [user, companyNumber, selectedDate]);
+<<<<<<< HEAD
     if (status === 'loading' && loading) {
         return <Loading />;
     }
@@ -49,4 +50,23 @@ export default function Invoicing() {
             </Tabs>
         );
     }
+=======
+
+    return (
+        <div className='px-4'>
+            <Tabs defaultValue="summary" className="w-[400px]">
+            <TabsList>
+                <TabsTrigger value="summary">Resumo</TabsTrigger>
+                <TabsTrigger value="association">Associação</TabsTrigger>
+            </TabsList>
+            <TabsContent value="summary">
+                <Summary />
+            </TabsContent>
+            <TabsContent value="association">
+                <Association />
+            </TabsContent>
+        </Tabs>
+        </div>
+    )
+>>>>>>> 95db336fd3db0223a3ec3bd8123e837afc91384f
 }
