@@ -42,15 +42,3 @@ export const columns: ColumnDef<Payment>[] = [
         header: "Meta dia",
     },
 ]
-/*
-"assoc_cnpj": "01141021000190",
-		"assoc_filial": "2",
-		"assoc_datmvt": "20240502",
-		"assoc_ass": "AL",
-		"assoc_desass": "ALIMENTOS",
-		"assoc_valdev": "000000000000.00",
-		"assoc_valven": "000000008091.51",
-		"assoc_margem": "0047.24",
-		"assoc_repres": "0000.43",
-		"assoc_metdia": "000000000.00",
-*/

@@ -16,7 +16,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '../ui/dropdown-menu'
-import { User } from 'lucide-react'
+import { User, Users } from 'lucide-react'
 import ButtonLogout from '../public/ButtonLogout'
 import { useAppContext } from '@/contexts/AppContext'
 
@@ -66,10 +66,14 @@ export default function Header() {
                                 <span>{user?.name}</span>
                             </DropdownMenuLabel>
                             <DropdownMenuSeparator />
-                            <DropdownMenuItem>Profile</DropdownMenuItem>
-                            <DropdownMenuItem>Billing</DropdownMenuItem>
-                            <DropdownMenuItem>Team</DropdownMenuItem>
-                            <DropdownMenuItem>Subscription</DropdownMenuItem>
+                            <DropdownMenuItem asChild>
+                                <Link 
+                                href="/customer/users"
+                                className='flex items-start justify-start'>
+                                <Users className='h-4 w-4' />
+                                <span>Usuários</span>
+                                </Link>
+                            </DropdownMenuItem>
                             <DropdownMenuSeparator />
                             <DropdownMenuItem asChild>
                                 <ButtonLogout variant="ghost" icon />

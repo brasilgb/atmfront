@@ -1,0 +1,255 @@
+"use client"
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from '@/components/ui/breadcrumb'
+import { Card, CardContent, CardFooter } from '@/components/ui/card'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { z } from 'zod'
+import { Loader, Save, User } from 'lucide-react'
+import React, { useEffect, useState } from 'react'
+import { formSchema } from '../schema'
+import { useAppContext } from '@/contexts/AppContext'
+import { useRouter } from 'next/navigation'
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
+import { Input } from '@/components/ui/input'
+import { Button } from '@/components/ui/button'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { Switch } from '@/components/ui/switch'
+import Loading from '@/components/loading'
+
+export default function CreateUser() {
+  const { loading, setLoading, user, status } = useAppContext();
+  const [organizations, setOrganizations] = useState<any>([])
+  const router = useRouter();
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      organizationId: "",
+      name: "",
+      email: "",
+      password: "",
+      retype_password: "",
+      is_admin: false,
+      status: false,
+      roles: 'user'
+    },
+  })
+
+  useEffect(() => {
+    fetch(`http://localhost:3000/user/org?orgid=${user?.organizationId}`, {
+      method: 'GET',
+      headers: {
+        'Content-type': 'Application/json',
+        Authorization: `Bearer ${user?.token}`
+      }
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setOrganizations(data);
+      });
+  }, [user]);
+
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+
+    setLoading(true)
+    const response = await fetch('http://localhost:3000/user', {
+      method: 'POST',
+      headers: {
+        'Content-type': 'Application/json',
+        Authorization: `Bearer ${user?.token}`
+      },
+      body: JSON.stringify({
+        organizationId: values.organizationId,
+        name: values.name,
+        email: values.email,
+        password: values.password,
+        status: values.status,
+        is_admin: false,
+        roles: values.roles
+      })
+    });
+    const users = await response.json();
+
+    if (users && response.ok) {
+      setLoading(false);
+      form.reset()
+      router.replace('/customer/users')
+    }
+  }
+
+  if (status === 'loading' && loading) {
+    return <Loading />;
+  }
+  if (status === 'authenticated' && user) {
+    return (
+      <section>
+        <div className='flex items-start justify-between h-14'>
+          <div className='flex items-center justify-start gap-2 text-gray-600'>
+            <User />
+            <h1 className='text-2xl font-semibold'>Usuários</h1>
+          </div>
+          <div>
+            <Breadcrumb>
+              <BreadcrumbList>
+                <BreadcrumbItem>
+                  <BreadcrumbLink href="/customer">Home</BreadcrumbLink>
+                </BreadcrumbItem>
+                <BreadcrumbSeparator />
+                <BreadcrumbItem>
+                  <BreadcrumbLink href="/customer/users">Usuários</BreadcrumbLink>
+                </BreadcrumbItem>
+                <BreadcrumbSeparator />
+                <BreadcrumbItem>
+                  <BreadcrumbPage>Criar usuário</BreadcrumbPage>
+                </BreadcrumbItem>
+              </BreadcrumbList>
+            </Breadcrumb>
+          </div>
+        </div>
+        <Card>
+          <CardContent>
+            <Form {...form}>
+              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+                <div className="md:grid grid-cols-4 gap-4">
+                  <FormField
+                    control={form.control}
+                    name="organizationId"
+                    render={({ field }) => (
+                      <FormItem
+                        className="w-full"
+                      >
+                        <FormLabel>Organização</FormLabel>
+                        <FormControl>
+                          <Select {...field} value={field.value} onValueChange={field.onChange}>
+                            <SelectTrigger className="w-full">
+                              <SelectValue placeholder="Selecione a organização" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {organizations?.map((organization: any) => (
+                                <SelectItem key={organization.id} value={organization.id}>{organization.name}</SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )} />
+                  <FormField
+                    control={form.control}
+                    name="name"
+                    render={({ field }) => (
+                      <FormItem
+                        className="w-full col-span-2"
+                      >
+                        <FormLabel>Nome</FormLabel>
+                        <FormControl>
+                          <Input placeholder="" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )} />
+                  <FormField
+                    control={form.control}
+                    name="email"
+                    render={({ field }) => (
+                      <FormItem
+                        className="w-full"
+                      >
+                        <FormLabel>E-mail</FormLabel>
+                        <FormControl>
+                          <Input placeholder="" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )} />
+                </div>
+
+                <div className="md:grid grid-cols-2 gap-4">
+                  <FormField
+                    control={form.control}
+                    name="password"
+                    render={({ field }) => (
+                      <FormItem
+                        className="w-full"
+                      >
+                        <FormLabel>Senha</FormLabel>
+                        <FormControl>
+                          <Input placeholder="" type="password" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )} />
+
+                  <FormField
+                    control={form.control}
+                    name="retype_password"
+                    render={({ field }) => (
+                      <FormItem
+                        className="w-full"
+                      >
+                        <FormLabel>Repita a senha</FormLabel>
+                        <FormControl>
+                          <Input placeholder="" type="password" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )} />
+                </div>
+
+                <div className="md:grid grid-cols-2 gap-4">
+                  <FormField
+                    control={form.control}
+                    name="roles"
+                    render={({ field }) => (
+                      <FormItem
+                        className="w-full"
+                      >
+                        <FormLabel>Função do usuário</FormLabel>
+                        <FormControl>
+                          <Select {...field} value={field.value} onValueChange={field.onChange}>
+                            <SelectTrigger className="w-full">
+                              <SelectValue placeholder="Selecione a função" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="admin">Administrador</SelectItem>
+                              <SelectItem value="user">Usuário</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )} />
+
+                  <FormField
+                    control={form.control}
+                    name="status"
+                    render={({ field }) => (
+                      <FormItem
+                        className="w-full"
+                      >
+                        <FormLabel>Selecione o Status</FormLabel>
+                        <FormControl>
+                          <Switch
+                            checked={field.value}
+                            onCheckedChange={field.onChange}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )} />
+                </div>
+
+                <CardFooter className='flex justify-end px-0'>
+                  <Button type="submit" className="cursor-pointer" variant="add">
+                    <Save />{loading ? <Loader className="animate-spin" /> : 'Salvar'}
+                  </Button>
+                </CardFooter>
+              </form>
+            </Form>
+          </CardContent>
+        </Card>
+      </section>
+    );
+  }
+}
